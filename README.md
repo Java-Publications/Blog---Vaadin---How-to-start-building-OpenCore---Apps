@@ -99,7 +99,7 @@ counter-community  (OSS — runnable on its own)
   │         ├─ AboutView
   │         └─ CoreFeatureContribution      ← contributes OSS routes + menu
   └─ resources/META-INF/services
-       ├─ eu.svenruppert.opencore.counter.extension.FeatureContribution
+       ├─ com.svenruppert.opencore.counter.extension.FeatureContribution
        │    → CoreFeatureContribution
        └─ com.vaadin.flow.server.VaadinServiceInitListener
             → OpenCoreRouteInitializer
@@ -118,7 +118,7 @@ counter-enterprise (Enterprise extension)
   ├─ ui/components
   │    └─ EnterpriseEditionBadge            ← pill rendered in the navbar
   └─ resources/META-INF/services
-       └─ eu.svenruppert.opencore.counter.extension.FeatureContribution
+       └─ com.svenruppert.opencore.counter.extension.FeatureContribution
             → EnterpriseFeatureContribution
 ```
 
@@ -398,10 +398,10 @@ method.
 ### 2. `META-INF/services` files (the discovery)
 
 Each module ships one line in
-`src/main/resources/META-INF/services/eu.svenruppert.opencore.counter.extension.FeatureContribution`:
+`src/main/resources/META-INF/services/com.svenruppert.opencore.counter.extension.FeatureContribution`:
 
-- community: `eu.svenruppert.opencore.counter.ui.core.CoreFeatureContribution`
-- enterprise: `eu.svenruppert.opencore.counter.enterprise.EnterpriseFeatureContribution`
+- community: `com.svenruppert.opencore.counter.ui.core.CoreFeatureContribution`
+- enterprise: `com.svenruppert.opencore.counter.enterprise.EnterpriseFeatureContribution`
 
 The `FeatureRegistry` constructor does the standard
 `ServiceLoader.load(FeatureContribution.class)` call, walks the
@@ -488,7 +488,7 @@ No `@Route`, no Vaadin annotation. You are wiring through the SPI.
 1. Create a new Maven module that depends on `counter-community`.
 2. Implement `FeatureContribution`, optionally `CounterEventFeature`.
 3. Drop the FQN into
-   `src/main/resources/META-INF/services/eu.svenruppert.opencore.counter.extension.FeatureContribution`.
+   `src/main/resources/META-INF/services/com.svenruppert.opencore.counter.extension.FeatureContribution`.
 4. Build the module's production frontend bundle with
    `<optimizeBundle>false</optimizeBundle>` (see the Lessons Learned
    section — the byte-code scanner cannot see dynamically wired

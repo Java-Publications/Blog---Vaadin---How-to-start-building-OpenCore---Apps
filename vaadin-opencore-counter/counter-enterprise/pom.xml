@@ -5,7 +5,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>eu.svenruppert.opencore</groupId>
+  <groupId>com.svenruppert.opencore</groupId>
   <artifactId>counter-enterprise</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -31,9 +31,9 @@
     <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
     <exec.plugin.version>3.5.1</exec.plugin.version>
 
-    <app.main.class>eu.svenruppert.opencore.counter.launcher.CounterApplicationLauncher</app.main.class>
+    <app.main.class>com.svenruppert.opencore.counter.launcher.CounterApplicationLauncher</app.main.class>
 
-    <pitest-test-classes>eu.svenruppert.opencore.counter.enterprise.*</pitest-test-classes>
+    <pitest-test-classes>com.svenruppert.opencore.counter.enterprise.*</pitest-test-classes>
   </properties>
 
   <repositories>
@@ -107,7 +107,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>eu.svenruppert.opencore</groupId>
+      <groupId>com.svenruppert.opencore</groupId>
       <artifactId>counter-community</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
@@ -149,7 +149,7 @@
     </dependency>
 
     <dependency>
-      <groupId>eu.svenruppert.opencore</groupId>
+      <groupId>com.svenruppert.opencore</groupId>
       <artifactId>counter-community</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <type>test-jar</type>
@@ -246,14 +246,14 @@
                 <outputFormat>HTML</outputFormat>
               </outputFormats>
               <targetClasses>
-                <param>eu.svenruppert.opencore.counter.enterprise.history.*</param>
-                <param>eu.svenruppert.opencore.counter.enterprise.audit.*</param>
-                <param>eu.svenruppert.opencore.counter.enterprise.export.*</param>
+                <param>com.svenruppert.opencore.counter.enterprise.history.*</param>
+                <param>com.svenruppert.opencore.counter.enterprise.audit.*</param>
+                <param>com.svenruppert.opencore.counter.enterprise.export.*</param>
               </targetClasses>
               <excludedClasses>
-                <param>eu.svenruppert.opencore.counter.enterprise.history.HistoryView</param>
-                <param>eu.svenruppert.opencore.counter.enterprise.audit.AuditLogView</param>
-                <param>eu.svenruppert.opencore.counter.enterprise.export.ExportView</param>
+                <param>com.svenruppert.opencore.counter.enterprise.history.HistoryView</param>
+                <param>com.svenruppert.opencore.counter.enterprise.audit.AuditLogView</param>
+                <param>com.svenruppert.opencore.counter.enterprise.export.ExportView</param>
               </excludedClasses>
               <targetTests>
                 <param>${pitest-test-classes}</param>
