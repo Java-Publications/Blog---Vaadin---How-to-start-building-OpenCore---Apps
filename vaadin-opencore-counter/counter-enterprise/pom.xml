@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>eu.svenruppert.opencore</groupId>
+  <artifactId>counter-enterprise</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>OpenCore Counter — Enterprise</name>
+  <description>
+    Enterprise extension of the Vaadin Open-Core Counter demo. It
+    contributes History, Audit Log and Export views via the
+    ServiceLoader extension mechanism declared in counter-community.
+  </description>
+
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <vaadin.version>25.1.1</vaadin.version>
+    <slf4j.version>2.0.17</slf4j.version>
+    <junit.jupiter.version>6.1.0-M1</junit.jupiter.version>
+    <browserless.version>1.0.0</browserless.version>
+
+    <maven.surefire.version>3.5.4</maven.surefire.version>
+    <pitest.version>1.23.0</pitest.version>
+    <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
+    <exec.plugin.version>3.5.1</exec.plugin.version>
+
+    <app.main.class>eu.svenruppert.opencore.counter.launcher.CounterApplicationLauncher</app.main.class>
+
+    <pitest-test-classes>eu.svenruppert.opencore.counter.enterprise.*</pitest-test-classes>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>vaadin-prereleases</id>
+      <url>https://maven.vaadin.com/vaadin-prereleases/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>vaadin-addons</id>
+      <url>https://maven.vaadin.com/vaadin-addons</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>vaadin-prereleases</id>
+      <url>https://maven.vaadin.com/vaadin-prereleases/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-bom</artifactId>
+        <type>pom</type>
+        <scope>import</scope>
+        <version>${vaadin.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>3.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>3.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>3.1.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>eu.svenruppert.opencore</groupId>
+      <artifactId>counter-community</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.vaadin</groupId>
+          <artifactId>vaadin-dev</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.vaadin</groupId>
+          <artifactId>vaadin-dev-server</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>browserless-test-junit6</artifactId>
+      <version>${browserless.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>eu.svenruppert.opencore</groupId>
+      <artifactId>counter-community</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.1</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec.plugin.version}</version>
+        <configuration>
+          <mainClass>${app.main.class}</mainClass>
+        </configuration>
+      </plugin>
+
+      <!--
+        Rebuild the Vaadin production frontend bundle with the
+        Enterprise classpath visible. The community bundle only sees
+        community components (Button, Span, H2, ...). When the
+        Enterprise edition runs, its views use Grid and TextArea,
+        which require their own web-component JS. Without this
+        plugin in counter-enterprise, those components stay invisible
+        in the browser.
+      -->
+      <plugin>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-maven-plugin</artifactId>
+        <version>${vaadin.version}</version>
+        <executions>
+          <execution>
+            <id>frontend</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>prepare-frontend</goal>
+              <goal>build-frontend</goal>
+            </goals>
+            <configuration>
+              <forceProductionBuild>true</forceProductionBuild>
+              <!--
+                Disable the byte-code optimisation that drops Vaadin
+                components not statically reachable from a @Route.
+                Open-Core views (Grid in HistoryView/AuditLogView,
+                TextArea in ExportView) are wired via dynamic
+                RouteContribution records, so the optimiser does not
+                see them and ships a bundle without their JS modules
+                — the views then render blank in the browser.
+              -->
+              <optimizeBundle>false</optimizeBundle>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>mutation</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>${pitest.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-junit5-plugin</artifactId>
+                <version>${pitest.junit5.plugin.version}</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <threads>2</threads>
+              <outputFormats>
+                <outputFormat>XML</outputFormat>
+                <outputFormat>HTML</outputFormat>
+              </outputFormats>
+              <targetClasses>
+                <param>eu.svenruppert.opencore.counter.enterprise.history.*</param>
+                <param>eu.svenruppert.opencore.counter.enterprise.audit.*</param>
+                <param>eu.svenruppert.opencore.counter.enterprise.export.*</param>
+              </targetClasses>
+              <excludedClasses>
+                <param>eu.svenruppert.opencore.counter.enterprise.history.HistoryView</param>
+                <param>eu.svenruppert.opencore.counter.enterprise.audit.AuditLogView</param>
+                <param>eu.svenruppert.opencore.counter.enterprise.export.ExportView</param>
+              </excludedClasses>
+              <targetTests>
+                <param>${pitest-test-classes}</param>
+              </targetTests>
+              <withHistory>false</withHistory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>pit-report</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>${pitest.version}</version>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>report</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+  </profiles>
+
+</project>
